@@ -1,12 +1,26 @@
 <ion-header>
   <ion-button slot="start" color="dark" size="small" mode="ios" (ionFocus)="buttonBack()"> Back </ion-button>
+  
   <ion-toolbar>
-    <ion-title>movie.title</ion-title>
+    <ion-title color="dark">{{ movie.title }}</ion-title>
+  
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <h1>
-    <ion-title>movie.title</ion-title>
+    <ion-item>{{ movie.title }}</ion-item>
+  </h1>
+  <h1>
+    <ion-item> Release Date: {{ movie.release_date }} </ion-item>
+  </h1>
+  <h1>
+    <ion-item>  {{ movie.backdrop_path }} </ion-item>
+  </h1>
+  <h1>
+    <ion-item> {{ movie.overview }} </ion-item>
+  </h1>
+  <h1>
+    <ion-item> {{ movie.poster_path }} </ion-item>
   </h1>
 </ion-content>
