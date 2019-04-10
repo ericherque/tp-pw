@@ -3,10 +3,22 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { getComponentViewByIndex } from '@angular/core/src/render3/util';
 import { AlertController } from '@ionic/angular';
+import { apiKey } from './../../tmdb';
+import { TmplAstBoundAttribute } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-interface Movie {
+export interface Movie {
+  backdrop_path: string;
+  id: number;
+  overview: string;
+  poster_path: string;
+  release_date: string;
   title: string;
-  id: string;
+}
+
+interface TMDBReponse {
+  results: Movie[];
 }
 
 @Component({
@@ -16,15 +28,16 @@ interface Movie {
 })
 
 export class HomePage {
-  movies: Movie[] = [];
+  movies: Promise<Movie[]>;
 
   constructor(
     private readonly router: Router,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private readonly http: HttpClient
   ) {
   }
   getMovie(search: string): void {
-    this.movies = search.length > 2 ? [{title: search, id: '1'}] : [];
+    this.movies = search.length > 2 ? this.searchMovies(search) : Promise.resolve([]);
   }
 
   async buttonAlert() {
@@ -46,5 +59,15 @@ export class HomePage {
 
   showDetails(movie: Movie): void {
     this.router.navigate(['/details'], {state: {movie}});
+  }
+
+  private async askTMDB(api: string, params: object): Promise<Movie[]> { const { results } = await this.http.get<TMDBReponse>(
+    `https://api.themoviedb.org/3/${api}/movie`, { params: { api_key: apiKey, ...params } }
+    ).toPromise();
+      return results;
+    }
+
+  private searchMovies(search: string): Promise<Movie[]> {
+    return this.askTMDB('search', {query: search});
   }
 }

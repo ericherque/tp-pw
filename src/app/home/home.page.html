@@ -11,22 +11,11 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngFor="let movie of movies">
-
-    <ion-list-header type="ios">
-      <ion-label>Movies</ion-label>
-    </ion-list-header>
+  <ion-list *ngFor="let movie of movies | async">
     
-    <ion-item (click)="showDetails(movie)">
+    <ion-item mode="ios" (click)="showDetails(movie)">
         <ion-label>{{ movie.title | uppercase }}</ion-label>  
     </ion-item>
 
-    <p *ngIf="movie.isSelected">
-        {{ movie.subModels | json }}
-        ionic generate page
-
-      <p>
-
   </ion-list>
-  <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
 </ion-content>
